@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "damj"
+version = "0.1.0"
+authors = [ { name = "Basel Mather", email = "baselmathar@gmail.com" } ]
+description = "A tool for creating comprehensive prompts for language models by combining project files and applying custom processing options."
+readme = "README.md"
+keywords = ["LLM", "prompts", "AI", "ChatGPT", "damj", "Damj", "Python Package", "Prompt Engineering", "Prompt Creation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pyperclip==1.9.0",
+    "ipython==8.18.1",
+    "typing_extensions==4.12.2",
+    "asttokens==2.4.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/baselhusam/damj"
