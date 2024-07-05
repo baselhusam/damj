@@ -1,15 +1,49 @@
+"""
+Utility functions for the DAMJ package
+
+This module provides utility functions for the DAMJ package, including functions to get
+the project structure, get the content of a file, and convert text to markdown.
+"""
 import os
-from typing import List
-import json
 import ast
+import json
 import textwrap
+from typing import List
 from IPython.display import Markdown
 
 
 def get_indent(level: int) -> str:
+    """
+    Get the indentation for a given level
+
+    Parameters:
+    ----------
+    level : int
+        The level of indentation
+
+    Returns:
+    -------
+    str
+        The indentation string
+    """
     return "|   " * level
 
 def matches_pattern(file_path: str, patterns: List[str]) -> bool:
+    """
+    Check if a file path matches any of the patterns
+
+    Parameters:
+    ----------
+    file_path : str
+        The file path to check
+    patterns : List[str]
+        The list of patterns to match
+
+    Returns:
+    -------
+    bool
+        True if the file path matches any of the patterns, False otherwise
+    """
     for pattern in patterns:
         if pattern == "*":
             return True
@@ -18,10 +52,26 @@ def matches_pattern(file_path: str, patterns: List[str]) -> bool:
     return False
 
 def get_project_structure(cwd: str, blacklist_files: List[str]) -> str:
+    """
+    Get the project structure
 
+    Parameters:
+    ----------
+    cwd : str
+        The current working directory
+    blacklist_files : List[str]
+        The list of files to exclude
+
+    Returns:
+    -------
+    str
+        The project structure
+    """
     project_structure_str = ""
     for root, dirs, files in os.walk(cwd):
-        dirs[:] = [d for d in dirs if not d.startswith('.') and not matches_pattern(os.path.join(root, d), blacklist_files)]
+        dirs[:] = [d for d in dirs
+                   if not d.startswith('.')
+                   and not matches_pattern(os.path.join(root, d), blacklist_files)]
 
         current_dir = os.path.relpath(root, cwd)
         indent_level = current_dir.count(os.sep)
@@ -43,9 +93,33 @@ def get_project_structure(cwd: str, blacklist_files: List[str]) -> str:
     return project_structure_str
 
 def handle_ipynb(file_path: str, py_options: dict) -> str:
+    """
+    Handle Jupyter notebooks content
+
+    Parameters:
+    ----------
+    file_path : str
+        The file path of the Jupyter notebook
+    py_options : dict
+        The Python options
+        The options include:
+            - add_comments: bool
+                Whether to include comments in the code
+            - add_imports: bool
+                Whether to include imports in the code
+            - add_docstrings: bool
+                Whether to include docstrings in the code
+            - ipynb_output: bool
+                Whether to include the output of the Jupyter notebook
+
+    Returns:
+    -------
+    str
+        The processed code
+    """
     with open(file_path, "r", encoding="utf-8") as file:
         notebook_content = json.load(file)
-    
+
     result = ""
     add_comments = py_options.get("add_comments", True)
     add_imports = py_options.get("add_imports", True)
@@ -53,17 +127,33 @@ def handle_ipynb(file_path: str, py_options: dict) -> str:
     include_output = py_options.get("ipynb_output", False)
 
     def process_code(code: str) -> str:
+        """
+        Process the code
+
+        Parameters:
+        ----------
+        code : str
+            The code to process
+
+        Returns:
+        -------
+        str
+            The processed code
+        """
         if not add_docstrings:
             tree = ast.parse(code)
             tree = strip_docstrings(tree)
             code = ast.unparse(tree)
 
         if not add_comments:
-            code = "\n".join(line for line in code.splitlines() if not line.strip().startswith("#"))
+            code = "\n".join(line for line in code.splitlines()
+                             if not line.strip().startswith("#"))
 
         if not add_imports:
             code = "\n".join(
-                line for line in code.splitlines() if not line.strip().startswith("import") and not line.strip().startswith("from")
+                line for line in code.splitlines()
+                if not line.strip().startswith("import")
+                and not line.strip().startswith("from")
             )
 
         return code
@@ -82,35 +172,78 @@ def handle_ipynb(file_path: str, py_options: dict) -> str:
     return result
 
 def strip_docstrings(node: ast.AST) -> ast.AST:
+    """
+    Strip docstrings from the AST
+
+    Parameters:
+    ----------
+    node : ast.AST
+        The AST node
+
+    Returns:
+    -------
+    ast.AST
+        The AST node with docstrings stripped
+    """
     if isinstance(node, (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-        node.body = [n for n in node.body if not (isinstance(n, ast.Expr) and isinstance(n.value, ast.Str))]
+        node.body = [n for n in node.body if not (isinstance(n, ast.Expr)
+                                            and isinstance(n.value, ast.Str))]
     for child in ast.iter_child_nodes(node):
         strip_docstrings(child)
     return node
 
 
 def get_file_content(file: str, py_options: dict) -> str:
+    """
+    Get the content of a file
+
+    Parameters:
+    ----------
+    file : str
+        The file path
+    py_options : dict
+        The Python options
+        The options include:
+            - add_comments: bool
+                Whether to include comments in the code
+            - add_imports: bool
+                Whether to include imports in the code
+            - add_docstrings: bool
+                Whether to include docstrings in the code
+
+    Returns:
+    -------
+    str
+        The content of the file
+    """
+    # GET OPTIONS
     add_comments = py_options.get("add_comments", True)
     add_imports = py_options.get("add_imports", True)
     add_docstrings = py_options.get("add_docstrings", True)
-    ipynb_output = py_options.get("ipynb_output", False)
 
+    # HANDLE JUPYTER NOTEBOOKS
     if file.endswith(".ipynb"):
         return handle_ipynb(file, py_options)
 
-    with open(file, "r", encoding="latin-1") as f:
-        new_code = f.read()
+    # READ FILE
+    with open(file, "r", encoding="latin-1") as file_code:
+        new_code = file_code.read()
 
+    # REMOVE COMMENTS
     if not add_comments:
-        new_code = "\n".join(line for line in new_code.splitlines() if not line.strip().startswith("#"))
+        new_code = "\n".join(line for line in new_code.splitlines()
+                             if not line.strip().startswith("#"))
 
+    # REMOVE IMPORTS
     if not add_imports:
-        new_code = "\n".join(line for line in new_code.splitlines() if not line.strip().startswith("import") and not line.strip().startswith("from"))
+        new_code = "\n".join(line for line in new_code.splitlines()
+                             if not line.strip().startswith("import")
+                             and not line.strip().startswith("from"))
 
+    # REMOVE DOCSTRINGS
     if not add_docstrings:
         tree = ast.parse(new_code)
         new_code = ast.unparse(strip_docstrings(tree))
-        
 
     return new_code
 
