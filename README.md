@@ -2,7 +2,7 @@
 
 <p align="center">
   <img alt="Damj Logo" style="width: 200px; max-width: 100%; height: auto;" src="https://raw.githubusercontent.com/baselhusam/damj/main/assets/logo.png"/>
-  <p align="center" style="font-size: 100px">✨ <b> Damj </b> ✨</p>
+  <h1 align="center">✨ <b> Damj </b> ✨</h1>
   <p align="center"> <b> damj </b> is a tool for creating comprehensive prompts for language models by combining project files and applying custom processing options.
 </p>
 
@@ -82,7 +82,7 @@ This is a sample project.
 What is the purpose of this project?
 ```
 
-#### Another Detailed Exmaple
+### Another Detailed Exmaple
 ```python
 import os
 from damj import Damj
