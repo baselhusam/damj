@@ -1,15 +1,13 @@
-![background](assets/background.png)
+![background](https://raw.githubusercontent.com/baselhusam/damj/main/assets/background.png)
 
 <p align="center">
-  <img alt="Damj Logo" style="width: 200px; max-width: 100%; height: auto;" src="assets/logo.png"/>
-  <p align="center" style="font-size: 50px">✨ <b> Damj </b> ✨</p>
+  <img alt="Damj Logo" style="width: 200px; max-width: 100%; height: auto;" src="https://raw.githubusercontent.com/baselhusam/damj/main/assets/logo.png"/>
+  <p align="center" style="font-size: 100px">✨ <b> Damj </b> ✨</p>
   <p align="center"> <b> damj </b> is a tool for creating comprehensive prompts for language models by combining project files and applying custom processing options.
 </p>
 
-[![PyPI](https://img.shields.io/pypi/v/damj)](https://pypi.org/project/damj)
-[![Downloads](https://static.pepy.tech/badge/damj)](https://pepy.tech/project/damj)
-
----
+[![PyPI](https://img.shields.io/pypi/v/damj)](https://pypi.org/project/damj/)
+<!-- [![Downloads](https://static.pepy.tech/badge/damj)](https://pepy.tech/project/damj) -->
 
 
 ## Introduction
