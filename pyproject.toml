@@ -14,7 +14,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "damj"
-version = "0.1.0"
+version = "0.1.1"
 authors = [ { name = "Basel Mather", email = "baselmathar@gmail.com" } ]
 description = "A tool for creating comprehensive prompts for language models by combining project files and applying custom processing options."
 readme = "README.md"
