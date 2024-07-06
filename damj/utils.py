@@ -51,7 +51,7 @@ def matches_pattern(file_path: str, patterns: List[str]) -> bool:
             return True
     return False
 
-def get_project_structure(cwd: str, blacklist_files: List[str]) -> str:
+def get_project_structure(cwd: str, blacklist_files: List[str]=None) -> str:
     """
     Get the project structure
 
@@ -68,6 +68,8 @@ def get_project_structure(cwd: str, blacklist_files: List[str]) -> str:
         The project structure
     """
     project_structure_str = ""
+    if blacklist_files is None:
+        blacklist_files = []
     for root, dirs, files in os.walk(cwd):
         dirs[:] = [d for d in dirs
                    if not d.startswith('.')
