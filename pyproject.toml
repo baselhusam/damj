@@ -1,3 +1,12 @@
+[tool.black]
+# line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.assets
+)/
+'''
+
 [build-system]
 requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -24,3 +33,6 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/baselhusam/damj"
+
+[tool.setuptools]
+packages = ["damj"]
