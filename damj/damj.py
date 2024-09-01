@@ -137,6 +137,7 @@ class Damj:
         whitelist_files = ["*"] if whitelist_files is None else whitelist_files
         self.blacklist_files = ["__pycache__"] if blacklist_files is None else blacklist_files
         self.whitelist_files = self._get_whitelist_files(whitelist_files, self.blacklist_files)
+        self.whitelist_files = [os.path.join(self.cwd, file) for file in self.whitelist_files]
         self.snippet_marker = snippet_marker
         self.prompt = ""
 
